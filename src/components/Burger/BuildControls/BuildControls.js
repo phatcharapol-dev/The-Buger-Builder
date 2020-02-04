@@ -11,14 +11,17 @@ import BuildControl from './BuildControl/BuildControl';
 const buildControls = props => {
     return (
         <div className={classes.BuildControls}>
+            <p>Current Price : <strong>{props.totalPrice.toFixed(2)}</strong> $</p>
            {props.buildctrls.map( ctrl => 
                <BuildControl 
                add={props.ingredientAdd} 
                remove={props.ingredientRemove} 
                key={ctrl.type} 
                label={ctrl.label}
+               disabled={props.disableInfo[ctrl.type]}
                type={ctrl.type}/>
             )}
+            <button className={classes.OrderButton} disabled={!props.purchaseFlag}>Order Now</button>
         </div>
     )
 }
