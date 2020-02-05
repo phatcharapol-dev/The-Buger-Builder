@@ -5,6 +5,7 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
+
 const IngredientPrice = {
     Salad:0.5,
     Meat:1,
@@ -28,7 +29,8 @@ class BurgerBuilder extends React.Component{
             {label:'Meat',type:'Meat'}
             ],
             TotalPrice:0,
-            purchaseFlag:false
+            purchaseFlag:false,
+            purchaseModalFlag:false
         }    
     }
     updatePurchaseState = (updateIngredient) => {
@@ -42,6 +44,20 @@ class BurgerBuilder extends React.Component{
         this.setState({
             purchaseFlag:(sum > 0)
         })
+    }
+    purchaseHandler = () => {
+        this.setState({
+            purchaseModalFlag:true
+        })
+    }
+
+    cancelModalHandler = () => {
+        this.setState({
+            purchaseModalFlag:false
+        })
+    }
+    continueModalHandler = () =>{
+        console.log('Continue')
     }
 
     addIngredientHandler = (type) => {
@@ -97,8 +113,13 @@ class BurgerBuilder extends React.Component{
         }
         return (
             <Aux>
-               <Modal>
-                <OrderSummary listIngredient={this.state.burgerIngredient}/>
+               <Modal show={this.state.purchaseModalFlag} click={this.cancelModalHandler}>
+                <OrderSummary
+                totalPrice={this.state.TotalPrice} 
+                listIngredient={this.state.burgerIngredient}
+                cancelModal={this.cancelModalHandler}
+                continueModal={this.continueModalHandler}
+                />
                </Modal>
                <Burger ingredients={this.state.burgerIngredient}/>
                <BuildControls
@@ -106,7 +127,8 @@ class BurgerBuilder extends React.Component{
                ingredientAdd={this.addIngredientHandler} 
                ingredientRemove={this.removeIngredientHandler}
                disableInfo={disableInfo}
-               purchaseFlag={this.state.purchaseFlag} 
+               purchaseFlag={this.state.purchaseFlag}
+               purchaseModal={this.purchaseHandler} 
                buildctrls={this.state.buildControls}/>     
             </Aux>
         )
