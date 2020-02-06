@@ -1,5 +1,5 @@
 import React from 'react' ;
-import Aux from '../../hoc/Auxily';
+import Aux from '../../hoc/Auxily/Auxily';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
@@ -70,14 +70,12 @@ class BurgerBuilder extends React.Component{
         //Add Price
         let TotalPrice = this.state.TotalPrice;
         let updateTotalPrice = TotalPrice+IngredientPrice[type] ; 
-        console.log(this.state);
         this.setState({
             burgerIngredient:{
                 ...updateburgerIngredient
              },
             TotalPrice:updateTotalPrice,
         });
-        console.log(this.state);
         this.updatePurchaseState(updateburgerIngredient);
     }
     removeIngredientHandler = (type) => {
@@ -88,7 +86,6 @@ class BurgerBuilder extends React.Component{
         //Remove Ingredient
         updateCount = oldCount-1;
         updateburgerIngredient[type] = updateCount;
-        console.log(updateCount);
       
         //Remove Price
         let TotalPrice = this.state.TotalPrice;
