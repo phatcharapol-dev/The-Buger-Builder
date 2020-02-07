@@ -4,7 +4,8 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
-
+import axios from '../../axios-orders';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 const IngredientPrice = {
     Salad:0.5,
@@ -30,7 +31,8 @@ class BurgerBuilder extends React.Component{
             ],
             TotalPrice:0,
             purchaseFlag:false,
-            purchaseModalFlag:false
+            purchaseModalFlag:false,
+            spinnerFlag:false
         }    
     }
     updatePurchaseState = (updateIngredient) => {
@@ -57,7 +59,29 @@ class BurgerBuilder extends React.Component{
         })
     }
     continueModalHandler = () =>{
-        console.log('Continue')
+        this.setState({spinnerFlag:true})
+        const order = {
+            ingredient:this.state.burgerIngredient,
+            price:this.state.TotalPrice.toFixed(2),
+            customer:{
+                name:'Phatcharapol Tridechee',
+                address:{
+                    street:'Test Street',
+                    zipCode:'12344',
+                    country:'Bangkok'
+                }
+            },
+            deliveryMethod:'fastest'
+        }
+        axios.post('/orders.json',order)
+        .then(res => {
+            this.setState({spinnerFlag:false,purchaseModalFlag:false});
+            console.log(res)
+        })
+        .catch(err =>{
+            this.setState({spinnerFlag:false,purchaseModalFlag:false});
+            console.log(err)
+        })
     }
 
     addIngredientHandler = (type) => {
@@ -108,15 +132,19 @@ class BurgerBuilder extends React.Component{
         for(let key in disableInfo){
             disableInfo[key] = disableInfo[key] <= 0 ;
         }
+        let ordersummary = ( <OrderSummary
+            totalPrice={this.state.TotalPrice} 
+            listIngredient={this.state.burgerIngredient}
+            cancelModal={this.cancelModalHandler}
+            continueModal={this.continueModalHandler}
+            />);
+        if(this.state.spinnerFlag){
+            ordersummary = (<Spinner/>);
+        }
         return (
             <Aux>
                <Modal show={this.state.purchaseModalFlag} click={this.cancelModalHandler}>
-                <OrderSummary
-                totalPrice={this.state.TotalPrice} 
-                listIngredient={this.state.burgerIngredient}
-                cancelModal={this.cancelModalHandler}
-                continueModal={this.continueModalHandler}
-                />
+                {ordersummary}
                </Modal>
                <Burger ingredients={this.state.burgerIngredient}/>
                <BuildControls
