@@ -59,29 +59,40 @@ class BurgerBuilder extends React.Component{
         })
     }
     continueModalHandler = () =>{
-        this.setState({spinnerFlag:true})
-        const order = {
-            ingredient:this.state.burgerIngredient,
-            price:this.state.TotalPrice.toFixed(2),
-            customer:{
-                name:'Phatcharapol Tridechee',
-                address:{
-                    street:'Test Street',
-                    zipCode:'12344',
-                    country:'Bangkok'
-                }
-            },
-            deliveryMethod:'fastest'
+        let queryParams = [];
+        for(let i in this.state.burgerIngredient){
+            queryParams.push(encodeURIComponent(i)+'='+encodeURIComponent(this.state.burgerIngredient[i]))
         }
-        axios.post('/orders.json',order)
-        .then(res => {
-            this.setState({spinnerFlag:false,purchaseModalFlag:false});
-            console.log(res)
-        })
-        .catch(err =>{
-            this.setState({spinnerFlag:false,purchaseModalFlag:false});
-            console.log(err)
-        })
+        queryParams.push('TotalPrice='+encodeURIComponent(this.state.TotalPrice))
+        const queryString=queryParams.join('&');
+        console.log(queryParams);
+        this.props.history.push({
+            pathname:'/checkout',
+            search:'?'+queryString
+        });
+        // this.setState({spinnerFlag:true})
+        // const order = {
+        //     ingredient:this.state.burgerIngredient,
+        //     price:this.state.TotalPrice.toFixed(2),
+        //     customer:{
+        //         name:'Phatcharapol Tridechee',
+        //         address:{
+        //             street:'Test Street',
+        //             zipCode:'12344',
+        //             country:'Bangkok'
+        //         }
+        //     },
+        //     deliveryMethod:'fastest'
+        // }
+        // axios.post('/orders.json',order)
+        // .then(res => {
+        //     this.setState({spinnerFlag:false,purchaseModalFlag:false});
+        //     console.log(res)
+        // })
+        // .catch(err =>{
+        //     this.setState({spinnerFlag:false,purchaseModalFlag:false});
+        //     console.log(err)
+        // })
     }
 
     addIngredientHandler = (type) => {
