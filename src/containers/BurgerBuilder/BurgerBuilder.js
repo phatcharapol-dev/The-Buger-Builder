@@ -25,7 +25,7 @@ class BurgerBuilder extends React.Component{
             {label:'Chesse',type:'Cheese'},
             {label:'Meat',type:'Meat'}
             ],
-            TotalPrice:1.2,
+            TotalPrice:0,
             purchaseFlag:false,
             purchaseModalFlag:false,
             spinnerFlag:false,
