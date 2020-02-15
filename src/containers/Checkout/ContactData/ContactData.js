@@ -13,6 +13,11 @@ class ContactData extends React.Component{
                     type:'text',
                     placeholder:'Your Name'
                 },
+                validation:{
+                    required:true,
+                },
+                isValid:false,
+                touched:false,
                 value:''
             },
             street:{
@@ -21,6 +26,11 @@ class ContactData extends React.Component{
                     type:'text',
                     placeholder:'Street'
                 },
+                validation:{
+                    required:true,
+                },
+                isValid:false,
+                touched:false,
                 value:''
             },
             zipCode:{
@@ -29,6 +39,13 @@ class ContactData extends React.Component{
                     type:'text',
                     placeholder:'ZIP Code'
                 },
+                validation:{
+                    required:true,
+                    minLength:5,
+                    maxLength:5
+                },
+                isValid:false,
+                touched:false,
                 value:''
             },
             country:{
@@ -37,6 +54,11 @@ class ContactData extends React.Component{
                     type:'text',
                     placeholder:'Country'
                 },
+                validation:{
+                    required:true,
+                },
+                isValid:false,
+                touched:false,
                 value:''
             },
             email:{
@@ -45,6 +67,11 @@ class ContactData extends React.Component{
                     type:'email',
                     placeholder:'Email'
                 },
+                validation:{
+                    required:true,
+                },
+                isValid:false,
+                touched:false,
                 value:''
             },
             deliveryMethod:{
@@ -55,9 +82,15 @@ class ContactData extends React.Component{
                         {value:'fastest',displayValue:'Fastest'},
                         {value:'cheapest',displayValue:'Cheapest'}]
                 },
+                validation:{
+                    required:true,
+                },
+                isValid:false,
+                touched:false,
                 value:''
             }
         },
+        FormisValid:false,
         spinnerFlag:false,
     }
 
@@ -84,16 +117,38 @@ class ContactData extends React.Component{
             console.log(err)
         })
     }
-
+    checkValidate = (value,rule) => {
+        console.log(value,rule)
+        let isValid = true ;
+        if(rule.required){
+            isValid = value.trim() !== '' && isValid ;
+        }
+        if(rule.minLength){
+            isValid = value.length >= rule.minLength && isValid;
+        }
+        if(rule.maxLength){
+            isValid = value.length <= rule.maxLength && isValid ;
+        }
+        return isValid ;
+    }
     inputChangeHandler = (event,identifyInput) => {
+        let isValid = false ;
         let updateOrder = {...this.state.orderForm};
         let updateInputOrder = {
             ...updateOrder[identifyInput]
         }
         updateInputOrder.value = event.target.value ;
+        updateInputOrder.isValid=this.checkValidate(updateInputOrder.value,updateInputOrder.validation);
+        updateInputOrder.touched = true ;
         updateOrder[identifyInput] = updateInputOrder;
+
+        let FormisValid = true ;
+        for(let inputIdentify in updateOrder){
+            FormisValid = updateOrder[inputIdentify].isValid && FormisValid;
+        }
         this.setState({
-            orderForm:{...updateOrder}
+            orderForm:{...updateOrder},
+            FormisValid:FormisValid
         })
     }
 
@@ -113,10 +168,13 @@ class ContactData extends React.Component{
                         elementType={element.config.elementType} 
                         elementConfig={element.config.elementConfig} 
                         value={element.config.value}
+                        isValid={!element.config.isValid}
+                        touched={element.config.touched}
+                        errorMessage={'Please enter a valid '+element.id}
                         changeHandler={(event) => this.inputChangeHandler(event,element.id)}/>    
                         )
                     })}
-         <Button label='Order' type='Success'/>
+         <Button label='Order' type='Success' disable={!this.state.FormisValid}/>
         </form>)
     
         if(this.state.spinnerFlag){
