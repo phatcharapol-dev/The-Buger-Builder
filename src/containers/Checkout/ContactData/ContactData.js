@@ -5,6 +5,8 @@ import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import {connect} from 'react-redux';
+import * as actions from '../../../store/actions/index';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 
 class ContactData extends React.Component{
     state ={
@@ -93,7 +95,6 @@ class ContactData extends React.Component{
             }
         },
         FormisValid:false,
-        spinnerFlag:false,
     }
 
     orderHandler = () => {
@@ -107,17 +108,8 @@ class ContactData extends React.Component{
             price:this.props.price.toFixed(2),
             orderData:orderData
         }
-        console.log(this.props);
-        axios.post('/orders.json',order)
-        .then(res => {
-            this.setState({spinnerFlag:false});
-            this.props.history.push('/');
-            console.log(res)
-        })
-        .catch(err =>{
-            this.setState({spinnerFlag:false});
-            console.log(err)
-        })
+        this.props.orderFormHandler(order);
+        
     }
     checkValidate = (value,rule) => {
         console.log(value,rule)
@@ -178,7 +170,7 @@ class ContactData extends React.Component{
          <Button label='Order' type='Success' disable={!this.state.FormisValid}/>
         </form>)
     
-        if(this.state.spinnerFlag){
+        if(this.props.spinnerFlag){
             form = <Spinner/>
         }
         return (
@@ -192,9 +184,16 @@ class ContactData extends React.Component{
 
 const mapStateToProps = state => {
     return {
-        ing:state.burgerIngredient,
-        price:state.TotalPrice
+        ing:state.burgerBuilder.burgerIngredient,
+        price:state.burgerBuilder.TotalPrice,
+        spinnerFlag:state.order.spinnerFlag
     }
 }
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => {
+    return {
+        orderFormHandler:(orderData)=>dispatch(actions.purchase(orderData))
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(withErrorHandler(ContactData,axios));

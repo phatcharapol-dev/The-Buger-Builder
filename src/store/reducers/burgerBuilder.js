@@ -1,4 +1,4 @@
-import * as actionType from './action';
+import * as actionType from '../actions/actionType';
 
 const IngredientPrice = {
     Salad:0.5,
@@ -8,14 +8,11 @@ const IngredientPrice = {
 }
 
 const initialState = {
-    burgerIngredient:{
-        Salad:0,
-        Meat:0,
-        Cheese:0,
-        Bacon:0        
-    },
+    burgerIngredient:null,
     TotalPrice:0,
     PurchaseFlag:false,
+    spinnerFlag:true,
+    error:false
 }
 
 const updatePurchaseState = (updateIngredient) => {
@@ -58,6 +55,26 @@ const reducer = (state=initialState,action) => {
             ...newState,
             PurchaseFlag:updatePurchaseState(newState.burgerIngredient)
         }
+        case actionType.SetIngredient:
+            return {
+                ...state,
+                burgerIngredient:{
+                    Salad:action.ingredientType.Salad,
+                    Meat:action.ingredientType.Meat,
+                    Cheese:action.ingredientType.Cheese,
+                    Bacon:action.ingredientType.Bacon,
+                },
+                TotalPrice:0,
+                error:false,
+                spinnerFlag:false,
+                PurchaseFlag:false
+            }
+        case actionType.FetchIngredientFailed:
+            return{
+                ...state,
+                error:true,
+                spinnerFlag:true
+            }
         default:
             return state;
     }
