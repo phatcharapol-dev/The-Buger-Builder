@@ -7,23 +7,18 @@ import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
 
 class Orders extends React.Component{
-    state = {
-        orders:[],
-        spinnerFlag:true
-    }
+
     componentDidMount(){
-        console.log('[Orders} ComponentDidMount');
         this.props.onFetchOrders();
     }
     render(){
-        console.log(this.props.orders);
-        let order = this.props.orders.map( order => {
-            return <Order key={order.id} price={order.price} ingredient={order.ingredient}/>
-        })
-        if(this.props.spinnerFlag){
-            order = <Spinner/>
+        let order = <Spinner/>;
+        if(!this.props.spinnerFlag){
+            order = this.props.orders.map( order => {
+                return <Order key={order.id} price={order.price} ingredient={order.ingredient}/>
+            }) ;
         }
-        return(
+        return (
             <div>
                 {order}
             </div>
@@ -41,7 +36,7 @@ const mapStateToProps = state => {
 } ;
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchOrders:() => dispatch(actions.fetchOrder)
+        onFetchOrders:() => dispatch(actions.fetchOrder())
     }
 } ;
 

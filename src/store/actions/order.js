@@ -61,7 +61,6 @@ export const fetchOrderFail = (err) => {
 }
 
 export const fetchOrder = () => {
-   
     return (dispatch) => {
         dispatch(fetchOrderStart());
         axios.get('/orders.json')
