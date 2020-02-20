@@ -10,7 +10,7 @@ const IngredientPrice = {
 const initialState = {
     burgerIngredient:null,
     TotalPrice:0,
-    PurchaseFlag:false,
+    purchaseFlag:false,
     spinnerFlag:true,
     error:false
 }
@@ -40,7 +40,7 @@ const reducer = (state=initialState,action) => {
         }
         return {
             ...newState,
-            PurchaseFlag:updatePurchaseState(newState.burgerIngredient)
+            purchaseFlag:updatePurchaseState(newState.burgerIngredient)
         }
         case actionType.RemoveIngredient:
          newState = {
@@ -53,7 +53,7 @@ const reducer = (state=initialState,action) => {
         }
         return {
             ...newState,
-            PurchaseFlag:updatePurchaseState(newState.burgerIngredient)
+            purchaseFlag:updatePurchaseState(newState.burgerIngredient)
         }
         case actionType.SetIngredient:
             return {
@@ -67,7 +67,7 @@ const reducer = (state=initialState,action) => {
                 TotalPrice:0,
                 error:false,
                 spinnerFlag:false,
-                PurchaseFlag:false
+                purchaseFlag:false
             }
         case actionType.FetchIngredientFailed:
             return{

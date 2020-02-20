@@ -7,5 +7,8 @@ export const InitialIngredient = 'InitialIngredient';
 export const PurchaseStart = 'PurchaseStart';
 export const PurchaseSuccess = 'PurchaseSuccess';
 export const PurchaseFail = 'PurchaseFail';
-
 export const PurchaseInit = 'PurchaseInit';
+
+export const FetchOrderStart = 'FetchOrderStart';
+export const FetchOrderSuccess = 'FetchOrderSuccess';
+export const FetchOrderFail = 'FetchOrderFail';

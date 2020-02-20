@@ -1,9 +1,10 @@
 import * as actionType from '../actions/actionType';
 
 const initialState = {
-    order:[],
+    orders:[],
     spinnerFlag:false,
-    PurchaseFlag:false
+    purchaseFlag:false,
+    error:false,
 }
 
 const orderReducer = (state=initialState,action) => {
@@ -11,7 +12,7 @@ const orderReducer = (state=initialState,action) => {
         case actionType.PurchaseInit:
             return {
                 ...state,
-                PurchaseFlag:false
+                purchaseFlag:false
             }
         case actionType.PurchaseStart:
             return {
@@ -27,13 +28,31 @@ const orderReducer = (state=initialState,action) => {
             return {
                 ...state,
                 spinnerFlag:false,
-                order:state.order.concat(newOrder),
-                PurchaseFlag:true
+                orders:state.orders.concat(newOrder),
+                purchaseFlag:true
             }
         case actionType.PurchaseFail:
             return {
                 ...state,
                 spinnerFlag:false
+            }
+        case actionType.FetchOrderStart:
+            return {
+                ...state,
+                spinnerFlag:true
+            }
+        case actionType.FetchOrderSuccess:
+            console.log(action);
+            return {
+                ...state,
+                orders:action.orders,
+                spinnerFlag:false
+            }
+        case actionType.FetchOrderFail:
+            return {
+                ...state,
+                spinnerFlag:false,
+                error:true
             }
         default:
             return state;

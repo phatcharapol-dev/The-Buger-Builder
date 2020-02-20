@@ -36,7 +36,7 @@ class Checkout extends React.Component{
 const mapStateToProps = state => {
     return {
         ing:state.burgerBuilder.burgerIngredient,
-        purchaseFlag:state.order.PurchaseFlag
+        purchaseFlag:state.order.purchaseFlag
     }
 }
 export default connect(mapStateToProps)(Checkout);

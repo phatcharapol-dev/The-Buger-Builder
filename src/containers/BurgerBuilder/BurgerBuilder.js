@@ -130,7 +130,7 @@ const mapStateToProps = state => {
     return {
         ing:state.burgerBuilder.burgerIngredient,
         price:state.burgerBuilder.TotalPrice,
-        purchaseFlag:state.burgerBuilder.PurchaseFlag,
+        purchaseFlag:state.burgerBuilder.purchaseFlag,
         spinnerFlag:state.burgerBuilder.spinnerFlag,
         error:state.burgerBuilder.error
     }
