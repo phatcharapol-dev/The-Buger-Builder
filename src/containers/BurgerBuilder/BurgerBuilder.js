@@ -115,7 +115,6 @@ class BurgerBuilder extends React.Component{
         if(this.props.spinnerFlag){
             ordersummary = (<Spinner/>);
         }
-        console.log(this.state);
         return (
             <Aux>
                <Modal show={this.state.purchaseModalFlag} click={this.cancelModalHandler}>

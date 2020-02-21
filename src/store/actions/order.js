@@ -25,11 +25,9 @@ export const purchase = (orderData) => {
         dispatch(purchaseStart())
         axios.post('/orders.json',orderData)
         .then(res => {
-            console.log(res)
             dispatch(purchaseSuccess(res.data.name,orderData))
         })
         .catch(err =>{
-            console.log(err)
             dispatch(purchaseFail(err));
         })
     }
@@ -65,7 +63,6 @@ export const fetchOrder = () => {
         dispatch(fetchOrderStart());
         axios.get('/orders.json')
         .then(res => {
-            console.log(res);
             let fetchOrders = [] ;
             for(let key in res.data){
                 fetchOrders.push({

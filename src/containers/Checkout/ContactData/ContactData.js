@@ -112,7 +112,6 @@ class ContactData extends React.Component{
         
     }
     checkValidate = (value,rule) => {
-        console.log(value,rule)
         let isValid = true ;
         if(rule.required){
             isValid = value.trim() !== '' && isValid ;
@@ -146,7 +145,6 @@ class ContactData extends React.Component{
     }
 
     render(){
-        console.log(this.state);
         let formElementArray = [] ;
         for(let key in this.state.orderForm){
             formElementArray.push({
