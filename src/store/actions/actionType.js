@@ -12,3 +12,8 @@ export const PurchaseInit = 'PurchaseInit';
 export const FetchOrderStart = 'FetchOrderStart';
 export const FetchOrderSuccess = 'FetchOrderSuccess';
 export const FetchOrderFail = 'FetchOrderFail';
+
+export const AuthStart = 'AuthStart';
+export const AuthSuccess = 'AuthSuccess';
+export const AuthFail = 'AuthFail';
+export const AuthLogOut = 'AuthLogOut';

@@ -46,7 +46,8 @@ class ContactData extends React.Component{
                 validation:{
                     required:true,
                     minLength:5,
-                    maxLength:5
+                    maxLength:5,
+                    isNumeric:true
                 },
                 isValid:false,
                 touched:false,
@@ -73,6 +74,7 @@ class ContactData extends React.Component{
                 },
                 validation:{
                     required:true,
+                    isEmail:true
                 },
                 isValid:false,
                 touched:false,
@@ -108,7 +110,7 @@ class ContactData extends React.Component{
             price:this.props.price.toFixed(2),
             orderData:orderData
         }
-        this.props.orderFormHandler(order);
+        this.props.orderFormHandler(order,this.props.token);
         
     }
     checkValidate = (value,rule) => {
@@ -121,6 +123,14 @@ class ContactData extends React.Component{
         }
         if(rule.maxLength){
             isValid = value.length <= rule.maxLength && isValid ;
+        }
+        if(rule.isEmail){
+            const pattern = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+            isValid = pattern.test(value) && isValid ;
+        }
+        if(rule.isNumeric){
+            const reg = /^\d+$/;
+            isValid = reg.test(value) && isValid;
         }
         return isValid ;
     }
@@ -184,13 +194,14 @@ const mapStateToProps = state => {
     return {
         ing:state.burgerBuilder.burgerIngredient,
         price:state.burgerBuilder.TotalPrice,
-        spinnerFlag:state.order.spinnerFlag
+        spinnerFlag:state.order.spinnerFlag,
+        token:state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        orderFormHandler:(orderData)=>dispatch(actions.purchase(orderData))
+        orderFormHandler:(orderData,token)=>dispatch(actions.purchase(orderData,token))
     }
 }
 

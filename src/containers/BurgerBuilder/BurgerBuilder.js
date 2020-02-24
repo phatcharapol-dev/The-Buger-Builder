@@ -27,9 +27,13 @@ class BurgerBuilder extends React.Component{
     }
 
     purchaseHandler = () => {
-        this.setState({
-            purchaseModalFlag:true
-        })
+        if(this.props.isAuth){
+            this.setState({
+                purchaseModalFlag:true
+            })
+        }else{
+            this.props.history.push('/auth');
+        }
     }
 
     cancelModalHandler = () => {
@@ -102,7 +106,8 @@ class BurgerBuilder extends React.Component{
                 disableInfo={disableInfo}
                 purchaseFlag={this.props.purchaseFlag}
                 purchaseModal={this.purchaseHandler} 
-                buildctrls={this.state.buildControls}/>
+                buildctrls={this.state.buildControls}
+                isAuth={this.props.isAuth}/>
             </Aux> 
 
             ordersummary =  <OrderSummary
@@ -131,7 +136,8 @@ const mapStateToProps = state => {
         price:state.burgerBuilder.TotalPrice,
         purchaseFlag:state.burgerBuilder.purchaseFlag,
         spinnerFlag:state.burgerBuilder.spinnerFlag,
-        error:state.burgerBuilder.error
+        error:state.burgerBuilder.error,
+        isAuth:state.auth.token != null
     }
 }
 const mapDispatchToProps = dispatch => {

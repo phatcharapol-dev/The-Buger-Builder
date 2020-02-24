@@ -13,7 +13,8 @@ const initialState = {
     TotalPrice:0,
     purchaseFlag:false,
     spinnerFlag:true,
-    error:false
+    error:false,
+    building:false
 }
 
 const updatePurchaseState = (updateIngredient) => {
@@ -32,7 +33,8 @@ const AddIngredient = (state,action) =>{
     const updateAddState = {
         burgerIngredient:updateAddIngs,
         TotalPrice:state.TotalPrice+IngredientPrice[action.ingredientType],
-        purchaseFlag:updatePurchaseState(updateAddIngs)
+        purchaseFlag:updatePurchaseState(updateAddIngs),
+        building:true
     }
     return updateObject(state,updateAddState);
 }
@@ -43,7 +45,8 @@ const RemoveIngredient = (state,action) => {
     const updateRemoveState = {
         burgerIngredient:updateRemoveIngs,
         TotalPrice:state.TotalPrice-IngredientPrice[action.ingredientType],
-        purchaseFlag:updatePurchaseState(updateRemoveIngs)
+        purchaseFlag:updatePurchaseState(updateRemoveIngs),
+        building:true
     }
     return updateObject(updateRemoveIngs,updateRemoveState);
 }
@@ -59,7 +62,8 @@ const SetIngredient = (state,action) => {
         TotalPrice:0,
         error:false,
         spinnerFlag:false,
-        purchaseFlag:false
+        purchaseFlag:false,
+        building:false
     }
     return updateObject(state,updateSetstate);
 }
