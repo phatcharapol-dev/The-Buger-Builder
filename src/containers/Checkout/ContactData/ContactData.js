@@ -108,7 +108,8 @@ class ContactData extends React.Component{
         const order = {
             ingredient:this.props.ing,
             price:this.props.price.toFixed(2),
-            orderData:orderData
+            orderData:orderData,
+            userId:this.props.userId
         }
         this.props.orderFormHandler(order,this.props.token);
         
@@ -195,7 +196,8 @@ const mapStateToProps = state => {
         ing:state.burgerBuilder.burgerIngredient,
         price:state.burgerBuilder.TotalPrice,
         spinnerFlag:state.order.spinnerFlag,
-        token:state.auth.token
+        token:state.auth.token,
+        userId:state.auth.userId
     }
 }
 

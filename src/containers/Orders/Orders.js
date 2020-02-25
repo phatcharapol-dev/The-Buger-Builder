@@ -9,7 +9,7 @@ import * as actions from '../../store/actions/index';
 class Orders extends React.Component{
 
     componentDidMount(){
-        this.props.onFetchOrders(this.props.token);
+        this.props.onFetchOrders(this.props.token,this.props.userId);
     }
     render(){
         let order = <Spinner/>;
@@ -32,12 +32,13 @@ const mapStateToProps = state => {
         purchaseFlag:state.order.purchaseFlag,
         spinnerFlag:state.order.spinnerFlag,
         error:state.order.error,
-        token:state.auth.token
+        token:state.auth.token,
+        userId:state.auth.userId
     }
 } ;
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchOrders:(token) => dispatch(actions.fetchOrder(token))
+        onFetchOrders:(token,userId) => dispatch(actions.fetchOrder(token,userId))
     }
 } ;
 
