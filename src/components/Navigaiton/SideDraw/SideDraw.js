@@ -12,7 +12,7 @@ const sideDraw = (props) => {
     return (
         <Aux>
             <Backdrop show={props.show} clicked={props.cancelSideDraw}/>
-            <div className={attendClasses.join(' ')}>
+            <div className={attendClasses.join(' ')} onClick={props.cancelSideDraw}>
                 <div className={classes.Logo}>
                 <Logo/>
                 </div>

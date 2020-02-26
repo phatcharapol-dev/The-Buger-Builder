@@ -6,6 +6,7 @@ import classes from './Auth.module.css';
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
 import { Redirect } from 'react-router-dom';
+import {updateObject,checkValidate} from '../../shared/utility';
 class Auth extends React.Component{
     state = {
         authForm:{
@@ -42,14 +43,16 @@ class Auth extends React.Component{
     }
 
     inputChangeHandler = (event,identifyInput) => {
-        let authForm = {...this.state.authForm};
-        let updateInput = {
-            ...authForm[identifyInput]
-        }
-        updateInput.value = event.target.value ;
-        updateInput.isValid=this.checkValidate(updateInput.value,updateInput.validation);
-        updateInput.touched = true ;
-        authForm[identifyInput] = updateInput;
+  
+        let updateInput = updateObject(this.state.authForm[identifyInput],{
+            value:event.target.value,
+            isValid:checkValidate(event.target.value,this.state.authForm[identifyInput].validation),
+            touched:true
+        })
+        let authForm = updateObject(this.state.authForm,{
+            [identifyInput]:updateInput
+        })
+       
 
         let FormisValid = true ;
         for(let inputIdentify in authForm){
@@ -59,24 +62,6 @@ class Auth extends React.Component{
             authForm:{...authForm},
             FormisValid:FormisValid
         })
-    }
-
-    checkValidate = (value,rule) => {
-        let isValid = true ;
-        if(rule.required){
-            isValid = value.trim() !== '' && isValid ;
-        }
-        if(rule.minLength){
-            isValid = value.length >= rule.minLength && isValid;
-        }
-        if(rule.maxLength){
-            isValid = value.length <= rule.maxLength && isValid ;
-        }
-        if(rule.isEmail){
-            const pattern = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
-            isValid = pattern.test(value) && isValid ;
-        }
-        return isValid ;
     }
 
     onSubmit = (event) => {
@@ -118,11 +103,11 @@ class Auth extends React.Component{
             error = <h3 style={{color:'red'}}>{this.props.error}</h3> ;
         }
         let isAuth = null ;
-        if(this.props.token !== null && this.props.buildingBurger){
-            isAuth = this.props.history.push('/checkout');
-        }else if(this.props.token !== null){
-            isAuth = <Redirect to='/'/>
+        if(this.props.isAuthenticated){
+            isAuth = <Redirect to={this.props.authRedirectPath} />;
         }
+        console.log(this.props);
+
         return (
             <div className={classes.Auth}>
                 {isAuth}
@@ -145,7 +130,8 @@ const mapStateToProps = state => {
         spinnerFlag:state.auth.spinnerFlag,
         error:state.auth.error,
         token:state.auth.token,
-        buildingBurger:state.burgerBuilder.building
+        isAuthenticated: state.auth.token !== null,
+        authRedirectPath:state.auth.authRedirectPath
     }
 }
 const mapDispatchToProps = dispatch => {

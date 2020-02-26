@@ -7,6 +7,7 @@ import Input from '../../../components/UI/Input/Input';
 import {connect} from 'react-redux';
 import * as actions from '../../../store/actions/index';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import {updateObject,checkValidate} from '../../../shared/utility';
 
 class ContactData extends React.Component{
     state ={
@@ -114,36 +115,18 @@ class ContactData extends React.Component{
         this.props.orderFormHandler(order,this.props.token);
         
     }
-    checkValidate = (value,rule) => {
-        let isValid = true ;
-        if(rule.required){
-            isValid = value.trim() !== '' && isValid ;
-        }
-        if(rule.minLength){
-            isValid = value.length >= rule.minLength && isValid;
-        }
-        if(rule.maxLength){
-            isValid = value.length <= rule.maxLength && isValid ;
-        }
-        if(rule.isEmail){
-            const pattern = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
-            isValid = pattern.test(value) && isValid ;
-        }
-        if(rule.isNumeric){
-            const reg = /^\d+$/;
-            isValid = reg.test(value) && isValid;
-        }
-        return isValid ;
-    }
+
     inputChangeHandler = (event,identifyInput) => {
-        let updateOrder = {...this.state.orderForm};
-        let updateInputOrder = {
-            ...updateOrder[identifyInput]
-        }
-        updateInputOrder.value = event.target.value ;
-        updateInputOrder.isValid=this.checkValidate(updateInputOrder.value,updateInputOrder.validation);
-        updateInputOrder.touched = true ;
-        updateOrder[identifyInput] = updateInputOrder;
+   
+        let updateInputOrder = updateObject(this.state.orderForm[identifyInput],{
+            value:event.target.value,
+            isValid:checkValidate(event.target.value,this.state.orderForm[identifyInput].validation),
+            touched:true
+        })
+        let updateOrder = updateObject(this.state.orderForm,{
+            [identifyInput]:updateInputOrder
+        });
+     
 
         let FormisValid = true ;
         for(let inputIdentify in updateOrder){

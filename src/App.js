@@ -11,6 +11,8 @@ import {Route,Switch,withRouter,Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as actions from './store/actions/index';
 
+
+
 class App extends React.Component{
   componentDidMount(){
     this.props.onAuthCheckState();

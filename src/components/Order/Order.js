@@ -10,7 +10,6 @@ const order = (props) => {
             })
         }
     }
-    console.log(ingredients);
     ingredients=ingredients.map( listIngredient => {
         return <span 
         key={listIngredient.ingredient}
