@@ -13,7 +13,7 @@ const initialState = {
     TotalPrice:0,
     purchaseFlag:false,
     spinnerFlag:true,
-    error:false,
+    error:false
 }
 
 const updatePurchaseState = (updateIngredient) => {

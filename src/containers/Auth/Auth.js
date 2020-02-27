@@ -104,9 +104,8 @@ class Auth extends React.Component{
         }
         let isAuth = null ;
         if(this.props.isAuthenticated){
-            isAuth = <Redirect to={this.props.authRedirectPath} />;
+            isAuth = <Redirect to={this.props.authRedirectPath}/>;
         }
-        console.log(this.props);
 
         return (
             <div className={classes.Auth}>
@@ -137,6 +136,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onAuth:(email,password,isSignUp) => dispatch(actions.auth(email,password,isSignUp)),
+        onSetAuthRedirectPath: () => dispatch( actions.SetAuthRedirectPath( '/' ) )
     }
 }
 
