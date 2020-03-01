@@ -21,15 +21,10 @@ export const purchaseStart = () => {
     }
 }
 export const purchase = (orderData,token) => {
-    return (dispatch) => {
-        dispatch(purchaseStart())
-        axios.post('/orders.json?auth='+token,orderData)
-        .then(res => {
-            dispatch(purchaseSuccess(res.data.name,orderData))
-        })
-        .catch(err =>{
-            dispatch(purchaseFail(err));
-        })
+    return {
+        type:actionType.Purchase,
+        orderData:orderData,
+        token:token
     }
 }
 
